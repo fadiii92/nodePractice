@@ -2,7 +2,7 @@ const path = require('path');
 
 const express = require('express');
 
-const productsFunc = require('../controlers/products')
+const productsFunc = require('../controllers/products')
 
 const router = express.Router();
 
@@ -13,4 +13,4 @@ router.get('/add-product', productsFunc.addProductPage);
 // /admin/add-product => POST
 router.post('/add-product', productsFunc.postProduct);
 
-exports.routes = router;
+module.exports = router
