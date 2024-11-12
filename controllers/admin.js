@@ -60,6 +60,13 @@ exports.postEditProduct = (req, res, next) => {
   });
 };
 
+exports.deleteProduct = (req, res, next) => {
+  const prodId = req.body.productId
+  Product.delById(prodId)
+  res.redirect('/admin/products')
+
+}
+
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
