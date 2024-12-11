@@ -70,17 +70,13 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const prodId = req.body.productId
-  Product.findByPk(prodId)
-  .then(product=>{
-    return product.destroy()
-  })
+  Product.deleteById(prodId) 
   .then(result=>{
     console.log("Destroyed")
     res.redirect('/admin/products')
   })
   .catch(err=>console.log(err))
 
-  .catch(err=>console.log(err))
 }
 
 exports.getProducts = (req, res, next) => {
