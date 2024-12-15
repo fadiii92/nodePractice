@@ -1,18 +1,24 @@
-const Sequelize = require('sequelize')
+const mongodb = require('mongodb')
 
-const sequelize = require('../util/database')
-const { name } = require('ejs')
+const getdb = require('../util/database').getdb
 
-const User = sequelize.define('user',{
-    id:{
-        type:Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-        
-    },
-    name:Sequelize.STRING,
-    email:Sequelize.STRING,
-})
+class User{
+    constructor(username, email, password){
+        this.username = username
+        this.email = email
+        this.password = password
+    }
+
+    save(){
+        const db = getdb()
+        return db.collection('users').insertOne(this)
+        .then(result=>console.log('usercreated'))
+        .catch(err=>console.log("Could not create user", err))
+    }
+
+    static findById(userId){
+
+    }
+}
 
 module.exports = User
