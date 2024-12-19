@@ -12,12 +12,12 @@ class User{
     save(){
         const db = getdb()
         return db.collection('users').insertOne(this)
-        .then(result=>console.log('usercreated'))
-        .catch(err=>console.log("Could not create user", err))
+
     }
 
     static findById(userId){
-
+        const db = getdb()
+        return db.collection('users').findOne({_id:new mongodb.ObjectId(userId)})
     }
 }
 
