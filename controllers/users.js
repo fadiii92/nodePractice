@@ -11,8 +11,9 @@ exports.postSignUpDetails = (req,res,next) => {
     const email = req.body.email
     const uName = req.body.uname
     const pwd = req.body.password
+    const cart = {items:[]}
 
-    const user = new User(email, uName, pwd) 
+    const user = new User(email, uName, pwd, cart) 
     user.save()
     .then(result=>{
         console.log('UserCreated')

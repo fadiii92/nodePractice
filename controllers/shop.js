@@ -38,26 +38,18 @@ exports.getIndex = (req, res, next) => {
     .catch(err => console.log(err))
 };
 
-// exports.getCart = (req, res, next) => {
-//   Cart.getCart(cart => {
-//     Product.fetchAll(products => {
-//       const cartProducts = [];
-//       for (product of products) {
-//         const cartProductData = cart.products.find(prod => prod.id = product.id)
-//         if (cartProductData) {
-//           cartProducts.push({ productData: product, qty: cartProductData.qty })
-//         }
-//       }
-
-//       res.render('shop/cart', {
-//         path: '/cart',
-//         pageTitle: 'Your Cart',
-//         products: cartProducts
-//       });
-
-//     })
-//   })
-// };
+exports.getCart = (req, res, next) => {
+  req.user
+    .getCart()
+    .then(products => {
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products
+      });
+    })
+    .catch(err => console.log(err));
+};
 
 
 exports.postCart = (req, res, next) => {
@@ -65,17 +57,22 @@ exports.postCart = (req, res, next) => {
   Product.FindById(prodId).then(product=>{
     return req.user.addToCart(product)
   })
-  .then(result=>console.log('product added to cart ' , result))
-  .catch(err=>console.log('Could not post cart'))
+  .then(result=>{
+    console.log('product added to cart ' , result)
+    res.redirect('/cart')
+  })
+  .catch(err=>console.log('Could not post cart',err))
 }
 
-// exports.postCartDeleteProduct = (req, res, next) => {
-//   const prodId = req.body.productId;
-//   Product.findById(prodId, product => {
-//     Cart.deleteProduct(prodId, product.price)
-//     res.redirect('/cart')
-//   })
-// }
+exports.postCartDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  req.user
+    .deleteItemFromCart(prodId)
+    .then(result=>{
+      res.redirect('/cart')
+    })
+    .catch(err=>console.log(err))
+}
 
 // exports.getOrders = (req, res, next) => {
 //   res.render('shop/orders', {
